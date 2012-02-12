@@ -68,7 +68,6 @@ func Heatmap(size image.Rectangle, points []DataPoint, dotSize int, opacity uint
 func warm(out, in draw.Image, opacity uint8, colors []color.Color) {
 	bounds := in.Bounds()
 	collen := float64(len(colors))
-	invisible := color.NRGBA{255, 255, 255, 0}
 	for x := bounds.Min.X; x < bounds.Max.X; x++ {
 		for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
 			col := in.At(x, y)
@@ -76,7 +75,7 @@ func warm(out, in draw.Image, opacity uint8, colors []color.Color) {
 			percent := float64(alpha) / float64(0xffff)
 			var outcol color.Color
 			if percent == 0 {
-				outcol = invisible
+				outcol = color.Transparent
 			} else {
 				template := colors[int((collen-1)*(1.0-percent))]
 				tr, tg, tb, _ := template.RGBA()
