@@ -39,6 +39,14 @@ type limits struct {
 	Max DataPoint
 }
 
+func (l limits) Dx() float64 {
+	return l.Max.X() - l.Min.X()
+}
+
+func (l limits) Dy() float64 {
+	return l.Max.Y() - l.Min.Y()
+}
+
 // Draw a heatmap.
 //
 // size is the size of the image to crate
@@ -124,8 +132,8 @@ func mkDot(size float64) draw.Image {
 
 func (l limits) translate(p DataPoint, i draw.Image, dotsize int) (rv image.Point) {
 	// Normalize to 0-1
-	x := float64(p.X()-l.Min.X()) / float64(l.Max.X()-l.Min.X())
-	y := float64(p.Y()-l.Min.Y()) / float64(l.Max.Y()-l.Min.Y())
+	x := float64(p.X()-l.Min.X()) / float64(l.Dx())
+	y := float64(p.Y()-l.Min.Y()) / float64(l.Dx())
 
 	// And remap to the image
 	rv.X = int(x * float64((i.Bounds().Max.X - dotsize)))
