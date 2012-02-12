@@ -47,53 +47,6 @@ func Heatmap(size image.Rectangle, points []DataPoint, dotSize int, opacity uint
 	return rv
 }
 
-// A color scheme range
-type SchemeRange struct {
-	// The starting color for this range
-	From color.Color
-	// The ending color for this range
-	To color.Color
-	// The number of colors to which this range should expand
-	Steps int
-}
-
-func floatRGBA(c color.Color) (r, g, b, a float64) {
-	ir, ig, ib, ia := c.RGBA()
-	return float64(ir), float64(ig), float64(ib), float64(ia)
-}
-
-// Generate a heatmap color scheme smoothly across the given scheme ranges.
-func SchemeBuilder(spec []SchemeRange) []color.Color {
-	rv := []color.Color{}
-
-	for _, r := range spec {
-		fr, fg, fb, fa := floatRGBA(r.From)
-		tr, tg, tb, ta := floatRGBA(r.To)
-
-		rd := (tr - fr) / float64(r.Steps)
-		gd := (tg - fg) / float64(r.Steps)
-		bd := (tb - fb) / float64(r.Steps)
-		ad := (ta - fa) / float64(r.Steps)
-
-		for x := 0; x < r.Steps; x++ {
-			c := color.RGBA{
-				uint8(int(fr) / 256),
-				uint8(int(fg) / 256),
-				uint8(int(fb) / 256),
-				uint8(int(fa) / 256),
-			}
-			fr += rd
-			fg += gd
-			fb += bd
-			fa += ad
-
-			rv = append(rv, c)
-		}
-	}
-
-	return rv
-}
-
 func warm(out, in draw.Image, opacity uint8, colors []color.Color) {
 	bounds := in.Bounds()
 	collen := float64(len(colors))
