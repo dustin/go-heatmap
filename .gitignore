@@ -4,6 +4,6 @@
 *.db
 *~
 /example/example
+/schemecompiler/schemecompiler
 6.out
 _*
-/schemecompiler/schemecompiler
