@@ -11,9 +11,27 @@ import (
 // A data point to be plotted.
 // These are all normalized to use the maximum amount of
 // space available in the output image.
-type DataPoint struct {
-	X float64
-	Y float64
+type DataPoint interface {
+	X() float64
+	Y() float64
+}
+
+type apoint struct {
+	x float64
+	y float64
+}
+
+func (a apoint) X() float64 {
+	return a.x
+}
+
+func (a apoint) Y() float64 {
+	return a.y
+}
+
+// Construct a simple datapoint
+func P(x, y float64) DataPoint {
+	return apoint{x, y}
 }
 
 type limits struct {
@@ -74,17 +92,17 @@ func warm(out, in draw.Image, opacity uint8, colors []color.Color) {
 }
 
 func findLimits(points []DataPoint) limits {
-	minx, miny := points[0].X, points[0].Y
+	minx, miny := points[0].X(), points[0].Y()
 	maxx, maxy := minx, miny
 
 	for _, p := range points {
-		minx = math.Min(p.X, minx)
-		miny = math.Min(p.Y, miny)
-		maxx = math.Max(p.X, maxx)
-		maxy = math.Max(p.Y, maxy)
+		minx = math.Min(p.X(), minx)
+		miny = math.Min(p.Y(), miny)
+		maxx = math.Max(p.X(), maxx)
+		maxy = math.Max(p.Y(), maxy)
 	}
 
-	return limits{DataPoint{minx, miny}, DataPoint{maxx, maxy}}
+	return limits{apoint{minx, miny}, apoint{maxx, maxy}}
 }
 
 func mkDot(size float64) draw.Image {
@@ -107,8 +125,8 @@ func mkDot(size float64) draw.Image {
 
 func (l limits) translate(p DataPoint, i draw.Image, dotsize int) (rv image.Point) {
 	// Normalize to 0-1
-	x := float64(p.X-l.Min.X) / float64(l.Max.X-l.Min.X)
-	y := float64(p.Y-l.Min.Y) / float64(l.Max.Y-l.Min.Y)
+	x := float64(p.X()-l.Min.X()) / float64(l.Max.X()-l.Min.X())
+	y := float64(p.Y()-l.Min.Y()) / float64(l.Max.Y()-l.Min.Y())
 
 	// And remap to the image
 	rv.X = int(x * float64((i.Bounds().Max.X - dotsize)))

@@ -14,7 +14,7 @@ func main() {
 	points := []heatmap.DataPoint{}
 	for n := 0; n < 350; n++ {
 		points = append(points,
-			heatmap.DataPoint{rand.Float64(), rand.Float64()})
+			heatmap.P(rand.Float64(), rand.Float64()))
 	}
 
 	// scheme, _ := schemes.FromImage("../schemes/fire.png")
