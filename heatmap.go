@@ -76,25 +76,32 @@ func Heatmap(size image.Rectangle, points []DataPoint, dotSize int, opacity uint
 func warm(out, in draw.Image, opacity uint8, colors []color.Color) {
 	bounds := in.Bounds()
 	collen := float64(len(colors))
+	ch := make(chan bool)
 	for x := bounds.Min.X; x < bounds.Max.X; x++ {
-		for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
-			col := in.At(x, y)
-			_, _, _, alpha := col.RGBA()
-			percent := float64(alpha) / float64(0xffff)
-			var outcol color.Color
-			if percent == 0 {
-				outcol = color.Transparent
-			} else {
-				template := colors[int((collen-1)*(1.0-percent))]
-				tr, tg, tb, _ := template.RGBA()
-				outcol = color.NRGBA{
-					uint8(tr / 256),
-					uint8(tg / 256),
-					uint8(tb / 256),
-					uint8(opacity)}
+		go func(x int) {
+			for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+				col := in.At(x, y)
+				_, _, _, alpha := col.RGBA()
+				percent := float64(alpha) / float64(0xffff)
+				var outcol color.Color
+				if percent == 0 {
+					outcol = color.Transparent
+				} else {
+					template := colors[int((collen-1)*(1.0-percent))]
+					tr, tg, tb, _ := template.RGBA()
+					outcol = color.NRGBA{
+						uint8(tr / 256),
+						uint8(tg / 256),
+						uint8(tb / 256),
+						uint8(opacity)}
+				}
+				out.Set(x, y, outcol)
 			}
-			out.Set(x, y, outcol)
-		}
+			ch <- true
+		}(x)
+	}
+	for x := bounds.Min.X; x < bounds.Max.X; x++ {
+		<-ch
 	}
 }
 
