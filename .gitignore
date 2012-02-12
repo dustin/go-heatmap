@@ -1,0 +1,8 @@
+#*
+*.6
+*.a
+*.db
+*~
+/example/example
+6.out
+_*
