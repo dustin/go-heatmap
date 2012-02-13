@@ -9,6 +9,10 @@ looking at the [example][example] to get a feel for what you can do.
 Basically, feed in a bunch of `x,y` type data and get back a heatmap.
 Awesome.
 
+Here's an example from a real-live report:
+
+![Northeast US](/dustin/go-heatmap/wiki/ne-us.jpg)
+
 ## Colors
 
 Colors are always the hardest part, so I attempted to make it easy by
