@@ -1,7 +1,6 @@
 package main
 
 import (
-	"image"
 	"image/color"
 	"image/png"
 	"log"
@@ -12,7 +11,7 @@ import (
 
 func main() {
 	// This is what generated the prototype image for AlphaFire.
-	spec := []schemes.SchemeRange{
+	spec := schemes.SchemeSpec{
 		// From white to yellow
 		schemes.SchemeRange{
 			color.White,
@@ -39,19 +38,10 @@ func main() {
 		},
 	}
 
-	colors := schemes.Build(spec)
-
-	i := image.NewRGBA(image.Rect(0, 0, 64, len(colors)))
-	for y, c := range colors {
-		for x := i.Bounds().Min.X; x < i.Bounds().Max.X; x++ {
-			i.Set(x, y, c)
-		}
-	}
-
 	f, err := os.Create("test.png")
 	if err != nil {
 		log.Fatalf("Error making test.png: %v", err)
 	}
 	defer f.Close()
-	png.Encode(f, i)
+	png.Encode(f, spec)
 }

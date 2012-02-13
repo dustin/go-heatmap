@@ -58,7 +58,7 @@ func (c mycolor) RGBA() (R, G, B, A uint32) {
 }
 
 // Generate a heatmap color scheme smoothly across the given scheme ranges.
-func Build(spec []SchemeRange) []color.Color {
+func Build(spec SchemeSpec) []color.Color {
 	rv := []color.Color{}
 
 	for _, r := range spec {
@@ -96,4 +96,24 @@ type SchemeRange struct {
 	To color.Color
 	// The number of colors to which this range should expand
 	Steps int
+}
+
+// A Color Scheme generator specification.
+//
+// Basically, this is just a bunch of start/stop points and colors
+// along a range.
+type SchemeSpec []SchemeRange
+
+func (ss SchemeSpec) ColorModel() color.Model {
+	return color.NRGBAModel
+}
+
+// SchemeSpecs are 32x256 images.
+func (ss SchemeSpec) Bounds() image.Rectangle {
+	return image.Rect(0, 0, 32, 256)
+}
+
+func (ss SchemeSpec) At(x, y int) color.Color {
+	// This is the ridiculously slow version.
+	return Build(ss)[y]
 }
