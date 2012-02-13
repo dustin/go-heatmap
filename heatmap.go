@@ -90,12 +90,15 @@ func warm(out, in draw.Image, opacity uint8, colors []color.Color) {
 					outcol = color.Transparent
 				} else {
 					template := colors[int((collen-1)*(1.0-percent))]
-					tr, tg, tb, _ := template.RGBA()
+					tr, tg, tb, ta := template.RGBA()
+					ta /= 256
+					outalpha := uint8(float64(ta) *
+						(float64(opacity) / 256.0))
 					outcol = color.NRGBA{
 						uint8(tr / 256),
 						uint8(tg / 256),
 						uint8(tb / 256),
-						uint8(opacity)}
+						uint8(outalpha)}
 				}
 				out.Set(x, y, outcol)
 			}
