@@ -22,8 +22,6 @@ func main() {
 				lawrence.Y()+(rand.Float64()/100.0)-0.005))
 	}
 
-	scheme := schemes.Fire
-
 	kmlout, err := os.Create("test.kml")
 	if err != nil {
 		log.Fatalf("Error creating kml file:  %v", err)
@@ -37,6 +35,6 @@ func main() {
 	defer imgout.Close()
 
 	img, err := heatmap.HeatmapKML(image.Rect(0, 0, 1024, 1024),
-		points, 200, 128, scheme, "test.png", kmlout)
+		points, 200, 128, schemes.AlphaFire, "test.png", kmlout)
 	png.Encode(imgout, img)
 }

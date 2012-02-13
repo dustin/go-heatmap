@@ -21,15 +21,13 @@ func main() {
 				lawrence.Y()+(rand.Float64()/100.0)-0.005))
 	}
 
-	scheme := schemes.Fire
-
 	kmzout, err := os.Create("test.kmz")
 	if err != nil {
 		log.Fatalf("Error creating kml file:  %v", err)
 	}
 	defer kmzout.Close()
 	err = heatmap.HeatmapKMZ(image.Rect(0, 0, 1024, 1024),
-		points, 200, 128, scheme, kmzout)
+		points, 200, 128, schemes.AlphaFire, kmzout)
 	if err != nil {
 		log.Fatalf("Error creating heatmap: %v", err)
 	}
