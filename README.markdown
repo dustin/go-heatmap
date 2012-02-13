@@ -25,7 +25,7 @@ the `schemes` subpackage.  You can preview them in
 The `schemes` subpackage also has a tool for generating a color scheme
 from an image.  Given an image that looks like this:
 
-![Fire Scheme](/dustin/go-heatmap/raw/master/schemes/fire.png)
+![Alpha Fire Scheme](/dustin/go-heatmap/raw/master/schemes/alphafire.png)
 
 You can use `schemes.FromImage("/path/to/file")` to load it and use it
 directly.  Colors near the bottom are for sparsely populated areas and
