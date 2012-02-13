@@ -38,6 +38,25 @@ func FromImage(filename string) ([]color.Color, error) {
 	return rv, nil
 }
 
+type mycolor struct {
+	R float64
+	G float64
+	B float64
+	A float64
+}
+
+func (c mycolor) RGBA() (R, G, B, A uint32) {
+	// My colors aren't pre-multiplied, so I've got to convert
+	// myself to an NRGBA, then an RGBA, then expand.
+
+	return color.RGBAModel.Convert(color.NRGBA{
+		uint8(c.R / 256.0),
+		uint8(c.G / 256.0),
+		uint8(c.B / 256.0),
+		uint8(c.A / 256.0),
+	}).RGBA()
+}
+
 // Generate a heatmap color scheme smoothly across the given scheme ranges.
 func Build(spec []SchemeRange) []color.Color {
 	rv := []color.Color{}
@@ -52,18 +71,12 @@ func Build(spec []SchemeRange) []color.Color {
 		ad := (ta - fa) / float64(r.Steps)
 
 		for x := 0; x < r.Steps; x++ {
-			c := color.RGBA{
-				uint8(int(fr) / 256),
-				uint8(int(fg) / 256),
-				uint8(int(fb) / 256),
-				uint8(int(fa) / 256),
-			}
+			rv = append(rv, mycolor{fr, fg, fb, fa})
+
 			fr += rd
 			fg += gd
 			fb += bd
 			fa += ad
-
-			rv = append(rv, c)
 		}
 	}
 
@@ -71,7 +84,7 @@ func Build(spec []SchemeRange) []color.Color {
 }
 
 func floatRGBA(c color.Color) (r, g, b, a float64) {
-	ir, ig, ib, ia := c.RGBA()
+	ir, ig, ib, ia := color.NRGBAModel.Convert(c).RGBA()
 	return float64(ir), float64(ig), float64(ib), float64(ia)
 }
 
