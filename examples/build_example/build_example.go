@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	// This is somewhat, but not exactly similar to alphafire.
+	// This is what generated the prototype image for AlphaFire.
 	spec := []schemes.SchemeRange{
 		// From white to yellow
 		schemes.SchemeRange{
@@ -25,17 +25,23 @@ func main() {
 			color.NRGBA{255, 0, 0, 255},
 			60,
 		},
-		// Then fade red down to transparent
+		// Then go from red to a bit of grey.
 		schemes.SchemeRange{
 			color.NRGBA{255, 0, 0, 255},
+			color.NRGBA{128, 128, 128, 220},
+			100,
+		},
+		// Then down to transparent
+		schemes.SchemeRange{
+			color.NRGBA{128, 128, 128, 220},
 			color.Transparent,
-			150,
+			46,
 		},
 	}
 
 	colors := schemes.Build(spec)
 
-	i := image.NewRGBA(image.Rect(0, 0, 256, len(colors)))
+	i := image.NewRGBA(image.Rect(0, 0, 64, len(colors)))
 	for y, c := range colors {
 		for x := i.Bounds().Min.X; x < i.Bounds().Max.X; x++ {
 			i.Set(x, y, c)
