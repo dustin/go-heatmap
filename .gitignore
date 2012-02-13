@@ -3,7 +3,6 @@
 *.a
 *.db
 *~
-/example/example
 /schemecompiler/schemecompiler
 6.out
 _*

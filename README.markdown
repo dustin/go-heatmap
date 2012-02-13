@@ -38,6 +38,6 @@ This lets you specify starting and ending colors across multiple
 segments.  Fun away!
 
 [heatmap]: http://en.wikipedia.org/wiki/Heat_map
-[example]: /dustin/go-heatmap/blob/master/example/example.go
+[example]: /dustin/go-heatmap/blob/master/examples/example/example.go
 [gheat]: http://www.zetadev.com/software/gheat/0.2/__/doc/html/configuration.html
 [ghschemes]: http://www.zetadev.com/software/gheat/0.2/__/doc/html/configuration.html#SECTION003200000000000000000
