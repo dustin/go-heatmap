@@ -1,10 +1,12 @@
 package heatmap
 
 import (
+	"archive/zip"
 	"errors"
 	"fmt"
 	"image"
 	"image/color"
+	"image/png"
 	"io"
 )
 
@@ -52,6 +54,34 @@ func HeatmapKML(size image.Rectangle, points []DataPoint, dotSize int, opacity u
 		adjustedLimits.Min.X())
 
 	return mapimg, err
+}
+
+// Generate a heatmap for geographical data as a kmz
+func HeatmapKMZ(size image.Rectangle, points []DataPoint, dotSize int, opacity uint8,
+	scheme []color.Color, out io.Writer) error {
+
+	z := zip.NewWriter(out)
+	dockml, err := z.Create("doc.kml")
+	if err != nil {
+		return err
+	}
+	defer z.Close()
+
+	img, err := HeatmapKML(size, points, dotSize, opacity, scheme,
+		"heatmap.png", dockml)
+	if err != nil {
+		return err
+	}
+
+	imgf, err := z.Create("heatmap.png")
+	if err != nil {
+		return err
+	}
+	err = png.Encode(imgf, img)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func adjustLimits(limits limits, size image.Rectangle, dotSize int) (rv limits) {
