@@ -6,6 +6,7 @@ import (
 	"image/color"
 	"image/draw"
 	"math"
+	"sync"
 )
 
 // A data point to be plotted.
@@ -76,7 +77,8 @@ func Heatmap(size image.Rectangle, points []DataPoint, dotSize int, opacity uint
 func warm(out, in draw.Image, opacity uint8, colors []color.Color) {
 	bounds := in.Bounds()
 	collen := float64(len(colors))
-	ch := make(chan bool)
+	var wg sync.WaitGroup
+	wg.Add(bounds.Dx())
 	for x := bounds.Min.X; x < bounds.Max.X; x++ {
 		go func(x int) {
 			for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
@@ -97,12 +99,10 @@ func warm(out, in draw.Image, opacity uint8, colors []color.Color) {
 				}
 				out.Set(x, y, outcol)
 			}
-			ch <- true
+			wg.Done()
 		}(x)
 	}
-	for x := bounds.Min.X; x < bounds.Max.X; x++ {
-		<-ch
-	}
+	wg.Wait()
 }
 
 func findLimits(points []DataPoint) limits {
