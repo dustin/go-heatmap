@@ -61,11 +61,11 @@ func HeatmapKMZ(size image.Rectangle, points []DataPoint, dotSize int, opacity u
 	scheme []color.Color, out io.Writer) error {
 
 	z := zip.NewWriter(out)
+	defer z.Close()
 	dockml, err := z.Create("doc.kml")
 	if err != nil {
 		return err
 	}
-	defer z.Close()
 
 	img, err := HeatmapKML(size, points, dotSize, opacity, scheme,
 		"heatmap.png", dockml)
