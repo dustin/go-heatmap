@@ -4,7 +4,10 @@ import (
 	"image"
 	"math"
 	"math/rand"
+	"runtime"
 	"testing"
+
+	"./schemes"
 )
 
 var testPoints = []DataPoint{}
@@ -48,5 +51,31 @@ func BenchmarkPlacement(b *testing.B) {
 		b.StartTimer()
 
 		placePoints(size, l, bw, testPoints, dot)
+	}
+}
+
+func BenchmarkWarming(b *testing.B) {
+	b.StopTimer()
+	maxproc := runtime.GOMAXPROCS(0)
+	defer func() {
+		runtime.GOMAXPROCS(maxproc)
+	}()
+
+	l := findLimits(testPoints)
+	size := image.Rect(0, 0, 4096, 4096)
+	dot := mkDot(float64(100))
+	colors := schemes.AlphaFire
+
+	runtime.GOMAXPROCS(runtime.NumCPU())
+	b.StartTimer()
+
+	for i := 0; i < b.N; i++ {
+		b.StopTimer()
+		bw := image.NewRGBA(size)
+		placePoints(size, l, bw, testPoints, dot)
+		out := image.NewRGBA(size)
+		b.StartTimer()
+
+		warm(out, bw, 64, colors)
 	}
 }
