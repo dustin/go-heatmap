@@ -82,10 +82,11 @@ func placePoints(size image.Rectangle, limits limits,
 func warm(out, in draw.Image, opacity uint8, colors []color.Color) {
 	bounds := in.Bounds()
 	collen := float64(len(colors))
-	var wg sync.WaitGroup
+	wg := sync.WaitGroup{}
 	wg.Add(bounds.Dx())
 	for x := bounds.Min.X; x < bounds.Max.X; x++ {
 		go func(x int) {
+			defer wg.Done()
 			for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
 				col := in.At(x, y)
 				_, _, _, alpha := col.RGBA()
@@ -107,7 +108,6 @@ func warm(out, in draw.Image, opacity uint8, colors []color.Color) {
 				}
 				out.Set(x, y, outcol)
 			}
-			wg.Done()
 		}(x)
 	}
 	wg.Wait()
