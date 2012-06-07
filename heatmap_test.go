@@ -4,7 +4,6 @@ import (
 	"image"
 	"math"
 	"math/rand"
-	"runtime"
 	"testing"
 
 	"./schemes"
@@ -56,17 +55,12 @@ func BenchmarkPlacement(b *testing.B) {
 
 func BenchmarkWarming(b *testing.B) {
 	b.StopTimer()
-	maxproc := runtime.GOMAXPROCS(0)
-	defer func() {
-		runtime.GOMAXPROCS(maxproc)
-	}()
 
 	l := findLimits(testPoints)
 	size := image.Rect(0, 0, 4096, 4096)
 	dot := mkDot(float64(100))
 	colors := schemes.AlphaFire
 
-	runtime.GOMAXPROCS(runtime.NumCPU())
 	b.StartTimer()
 
 	for i := 0; i < b.N; i++ {
