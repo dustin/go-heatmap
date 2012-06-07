@@ -1,6 +1,7 @@
 package heatmap
 
 import (
+	"image"
 	"math"
 	"math/rand"
 	"testing"
@@ -32,4 +33,20 @@ func TestFindLimits(t *testing.T) {
 
 	assertEpsilon(t, "dx", 0.9789178728278681, l.Dx())
 	assertEpsilon(t, "dy", 0.9951745085721826, l.Dy())
+}
+
+func BenchmarkPlacement(b *testing.B) {
+	b.StopTimer()
+	l := findLimits(testPoints)
+	size := image.Rect(0, 0, 4096, 4096)
+	dot := mkDot(float64(100))
+	b.StartTimer()
+
+	for i := 0; i < b.N; i++ {
+		b.StopTimer()
+		bw := image.NewRGBA(size)
+		b.StartTimer()
+
+		placePoints(size, l, bw, testPoints, dot)
+	}
 }

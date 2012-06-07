@@ -61,17 +61,22 @@ func Heatmap(size image.Rectangle, points []DataPoint, dotSize int, opacity uint
 
 	limits := findLimits(points)
 
-	// Draw black/alpha onto this
+	// Draw black/alpha into the image
 	bw := image.NewRGBA(size)
-	for _, p := range points {
-		limits.placePoint(p, bw, dot)
-	}
+	placePoints(size, limits, bw, points, dot)
 
 	rv := image.NewRGBA(size)
 
 	// Then we transplant the pixels one at a time pulling from our color map
 	warm(rv, bw, opacity, scheme)
 	return rv
+}
+
+func placePoints(size image.Rectangle, limits limits,
+	bw *image.RGBA, points []DataPoint, dot draw.Image) {
+	for _, p := range points {
+		limits.placePoint(p, bw, dot)
+	}
 }
 
 func warm(out, in draw.Image, opacity uint8, colors []color.Color) {
