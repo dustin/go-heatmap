@@ -14,7 +14,7 @@ import (
 	"github.com/dustin/go-humanize"
 )
 
-const url = "http://single.couchbase.net/wikipedia/_design/places/_spatial/points?bbox=-180,-90,180,90"
+const url = "http://single.couchbase.net/wikipedia2012/_design/places/_spatial/points?bbox=-180,-90,180,90"
 
 type Row struct {
 	ID       string `json:"id"`
