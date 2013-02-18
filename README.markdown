@@ -11,7 +11,7 @@ Awesome.
 
 Here's an example from a real-live report:
 
-![Northeast US](/dustin/go-heatmap/wiki/ne-us.jpg)
+![Northeast US](https://raw.github.com/wiki/dustin/go-heatmap/ne-us.jpg)
 
 ## Colors
 
@@ -29,7 +29,7 @@ the `schemes` subpackage.  You can preview them in
 The `schemes` subpackage also has a tool for generating a color scheme
 from an image.  Given an image that looks like this:
 
-![Alpha Fire Scheme](/dustin/go-heatmap/raw/master/schemes/alphafire.png)
+![Alpha Fire Scheme](https://raw.github.com/dustin/go-heatmap/master/schemes/alphafire.png)
 
 You can use `schemes.FromImage("/path/to/file")` to load it and use it
 directly.  Colors near the bottom are for sparsely populated areas and
