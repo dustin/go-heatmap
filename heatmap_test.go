@@ -37,6 +37,11 @@ func TestFindLimits(t *testing.T) {
 	assertEpsilon(t, "dy", 0.9951745085721826, l.Dy())
 }
 
+func TestMkImage(t *testing.T) {
+	Heatmap(image.Rect(0, 0, 1024, 1024),
+		testPoints, 150, 128, schemes.AlphaFire)
+}
+
 func BenchmarkPlacement(b *testing.B) {
 	b.StopTimer()
 	l := findLimits(testPoints)
