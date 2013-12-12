@@ -47,8 +47,8 @@ func rootHandler(w http.ResponseWriter, req *http.Request) {
 	opacity := uint8(parseInt(vals, "o", 128, 1, 255))
 
 	defer req.Body.Close()
-	lr := io.LimitedReader{req.Body, maxInputLength}
-	cr := csv.NewReader(&lr)
+	lr := io.LimitReader(req.Body, maxInputLength)
+	cr := csv.NewReader(lr)
 
 	data := []heatmap.DataPoint{}
 	reading := true
