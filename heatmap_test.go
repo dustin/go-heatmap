@@ -7,6 +7,8 @@ import (
 	"testing"
 
 	"./schemes"
+
+	"github.com/jteeuwen/imghash"
 )
 
 var testPoints = []DataPoint{}
@@ -37,9 +39,14 @@ func TestFindLimits(t *testing.T) {
 	assertEpsilon(t, "dy", 0.9951745085721826, l.Dy())
 }
 
+const expHash = uint64(62624876249118208)
+
 func TestMkImage(t *testing.T) {
-	Heatmap(image.Rect(0, 0, 1024, 1024),
-		testPoints, 150, 128, schemes.AlphaFire)
+	got := imghash.Average(Heatmap(image.Rect(0, 0, 1024, 1024),
+		testPoints, 150, 128, schemes.AlphaFire))
+	if got != expHash {
+		t.Errorf("Expected hash = %v, got %v", expHash, got)
+	}
 }
 
 func BenchmarkPlacement(b *testing.B) {
