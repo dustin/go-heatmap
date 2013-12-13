@@ -51,3 +51,14 @@ func TestHeatmapKML(t *testing.T) {
 		t.Errorf("Expected kml=%v, got %v", expKml, gotK)
 	}
 }
+
+func TestHeatmapKMLOutOfRange(t *testing.T) {
+	kmlBuf := &bytes.Buffer{}
+
+	_, err := HeatmapKML(image.Rect(0, 0, 1024, 1024),
+		append(testPoints, P(-200, 0)), 150, 128, schemes.AlphaFire,
+		testKmlImgUrl, kmlBuf)
+	if err == nil {
+		t.Fatalf("Expected error with bad input")
+	}
+}

@@ -35,12 +35,8 @@ func HeatmapKML(size image.Rectangle, points []DataPoint, dotSize int, opacity u
 	scheme []color.Color, imgurl string, out io.Writer) (image.Image, error) {
 
 	limits := findLimits(points)
-	if limits.Min.X() < -180 || limits.Max.X() > 180 {
-		return nil, errors.New("X limits out of range")
-	}
-
-	if limits.Min.Y() < -90 || limits.Max.Y() > 90 {
-		return nil, errors.New("Y limits out of range")
+	if !limits.inRange(-180, 180, -90, 90) {
+		return nil, errors.New("limits out of range")
 	}
 
 	mapimg := Heatmap(size, points, dotSize, opacity, scheme)
