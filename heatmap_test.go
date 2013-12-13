@@ -39,6 +39,22 @@ func TestFindLimits(t *testing.T) {
 	assertEpsilon(t, "dy", 0.9951745085721826, l.Dy())
 }
 
+func TestHeatmapKMLLimits(t *testing.T) {
+	tests := []DataPoint{
+		P(-200, 0),
+		P(200, 0),
+		P(0, 100),
+		P(0, -100),
+	}
+
+	for _, test := range tests {
+		lim := findLimits([]DataPoint{test})
+		if lim.inRange(-180, 180, -90, 90) {
+			t.Errorf("Expected out of range on %v", test)
+		}
+	}
+}
+
 const expHash = uint64(62624876249118208)
 
 func TestMkImage(t *testing.T) {

@@ -40,6 +40,13 @@ type limits struct {
 	Max DataPoint
 }
 
+func (l limits) inRange(lx, hx, ly, hy float64) bool {
+	return l.Min.X() >= lx &&
+		l.Max.X() <= hx &&
+		l.Min.Y() >= ly &&
+		l.Max.Y() <= hy
+}
+
 func (l limits) Dx() float64 {
 	return l.Max.X() - l.Min.X()
 }
