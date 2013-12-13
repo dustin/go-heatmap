@@ -52,6 +52,12 @@ func HeatmapKML(size image.Rectangle, points []DataPoint, dotSize int, opacity u
 	return mapimg, err
 }
 
+func must(err error) {
+	if err != nil {
+		panic(err)
+	}
+}
+
 // Generate a heatmap for geographical data as a kmz
 func HeatmapKMZ(size image.Rectangle, points []DataPoint, dotSize int, opacity uint8,
 	scheme []color.Color, out io.Writer) error {
@@ -59,9 +65,7 @@ func HeatmapKMZ(size image.Rectangle, points []DataPoint, dotSize int, opacity u
 	z := zip.NewWriter(out)
 	defer z.Close()
 	dockml, err := z.Create("doc.kml")
-	if err != nil {
-		return err
-	}
+	must(err) // no known condition can cause failure here
 
 	img, err := HeatmapKML(size, points, dotSize, opacity, scheme,
 		"heatmap.png", dockml)
@@ -70,14 +74,9 @@ func HeatmapKMZ(size image.Rectangle, points []DataPoint, dotSize int, opacity u
 	}
 
 	imgf, err := z.Create("heatmap.png")
-	if err != nil {
-		return err
-	}
-	err = png.Encode(imgf, img)
-	if err != nil {
-		return err
-	}
-	return nil
+	must(err) // Can't induce failure here, either
+
+	return png.Encode(imgf, img)
 }
 
 func adjustLimits(limits limits, size image.Rectangle, dotSize int) (rv limits) {

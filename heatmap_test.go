@@ -2,6 +2,7 @@ package heatmap
 
 import (
 	"image"
+	"io"
 	"math"
 	"math/rand"
 	"testing"
@@ -62,6 +63,18 @@ func TestMkImage(t *testing.T) {
 		testPoints, 150, 128, schemes.AlphaFire))
 	if got != expHash {
 		t.Errorf("Expected hash = %v, got %v", expHash, got)
+	}
+}
+
+func TestMust(t *testing.T) {
+	must(nil) // no panic
+	panicked := false
+	func() {
+		defer func() { panicked = recover() != nil }()
+		must(io.EOF)
+	}()
+	if !panicked {
+		t.Fatalf("Expected a panic, but didn't get one")
 	}
 }
 
