@@ -1,4 +1,4 @@
-// Generate heatmaps.
+// Package heatmap generates heatmaps for map overlays.
 package heatmap
 
 import (
@@ -9,7 +9,7 @@ import (
 	"sync"
 )
 
-// A data point to be plotted.
+// A DataPoint to be plotted.
 // These are all normalized to use the maximum amount of
 // space available in the output image.
 type DataPoint interface {
@@ -30,7 +30,7 @@ func (a apoint) Y() float64 {
 	return a.y
 }
 
-// Construct a simple datapoint
+// P is a shorthand simple datapoint constructor.
 func P(x, y float64) DataPoint {
 	return apoint{x, y}
 }
@@ -55,7 +55,7 @@ func (l limits) Dy() float64 {
 	return l.Max.Y() - l.Min.Y()
 }
 
-// Draw a heatmap.
+// Heatmap draws a heatmap.
 //
 // size is the size of the image to crate
 // dotSize is the impact size of each point on the output

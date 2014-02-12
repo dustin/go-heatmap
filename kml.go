@@ -10,10 +10,10 @@ import (
 	"io"
 )
 
-const kml_start = `<?xml version="1.0" encoding="UTF-8"?>
+const kmlStart = `<?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2">
 <Folder>`
-const kml_overlay = `
+const kmlOverlay = `
     <GroundOverlay>
       <Icon>
         <href>%s</href>
@@ -26,11 +26,11 @@ const kml_overlay = `
         <rotation>0</rotation>
       </LatLonBox>
     </GroundOverlay>`
-const kml_end = `</Folder></kml>`
+const kmlEnd = `</Folder></kml>`
 
-const kml = kml_start + kml_overlay + kml_end
+const kml = kmlStart + kmlOverlay + kmlEnd
 
-// Generate a heatmap for geographical data and the kml required to render it.
+// HeatmapKML generates a heatmap for geographical data and the kml required to render it.
 func HeatmapKML(size image.Rectangle, points []DataPoint, dotSize int, opacity uint8,
 	scheme []color.Color, imgurl string, out io.Writer) (image.Image, error) {
 
@@ -58,7 +58,7 @@ func must(err error) {
 	}
 }
 
-// Generate a heatmap for geographical data as a kmz
+// HetmapKMZ generates a heatmap for geographical data as a kmz.
 func HeatmapKMZ(size image.Rectangle, points []DataPoint, dotSize int, opacity uint8,
 	scheme []color.Color, out io.Writer) error {
 
