@@ -3,6 +3,7 @@
 *.a
 *.db
 *~
+/examples/wikipedia/wikipedia
 /schemecompiler/schemecompiler
 6.out
 _*
