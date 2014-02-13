@@ -16,7 +16,7 @@ import (
 
 const url = "http://single.couchbase.net/wikipedia2012/_design/places/_spatial/points?bbox=-180,-90,180,90"
 
-type Row struct {
+type row struct {
 	ID       string `json:"id"`
 	Value    int    `json:"value"`
 	Geometry struct {
@@ -51,7 +51,7 @@ func main() {
 		if bytes[0] != '{' {
 			break
 		}
-		r := Row{}
+		r := row{}
 		if bytes[len(bytes)-1] == ',' {
 			bytes = bytes[:len(bytes)-1]
 		}

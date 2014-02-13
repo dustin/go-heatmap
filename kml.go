@@ -58,7 +58,7 @@ func must(err error) {
 	}
 }
 
-// HetmapKMZ generates a heatmap for geographical data as a kmz.
+// HeatmapKMZ generates a heatmap for geographical data as a kmz.
 func HeatmapKMZ(size image.Rectangle, points []DataPoint, dotSize int, opacity uint8,
 	scheme []color.Color, out io.Writer) error {
 

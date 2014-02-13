@@ -13,7 +13,7 @@ import (
 	"github.com/jteeuwen/imghash"
 )
 
-const testKmlImgUrl = "http://www.example.com/thing.png"
+const testKmlImgURL = "http://www.example.com/thing.png"
 
 const expKml = `<?xml version="1.0" encoding="UTF-8"?>
 		<kml xmlns="http://www.opengis.net/kml/2.2">
@@ -57,7 +57,7 @@ func TestHeatmapKML(t *testing.T) {
 
 	img, err := HeatmapKML(image.Rect(0, 0, 1024, 1024),
 		testPoints, 150, 128, schemes.AlphaFire,
-		testKmlImgUrl, kmlBuf)
+		testKmlImgURL, kmlBuf)
 	if err != nil {
 		t.Fatalf("Error generating kml: %v", err)
 	}
@@ -76,7 +76,7 @@ func TestHeatmapKMLOutOfRange(t *testing.T) {
 
 	_, err := HeatmapKML(image.Rect(0, 0, 1024, 1024),
 		append(testPoints, P(-200, 0)), 150, 128, schemes.AlphaFire,
-		testKmlImgUrl, kmlBuf)
+		testKmlImgURL, kmlBuf)
 	if err == nil {
 		t.Fatalf("Expected error with bad input")
 	}

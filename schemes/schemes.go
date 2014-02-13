@@ -1,21 +1,19 @@
-/*
- Standard color schemes from gheat.
-
- These color schemes were converted from the pngs from gheat are made
- available for your convenience.
-*/
+// Package schemes provides standard color schemes from gheat.
+//
+// These color schemes were converted from the pngs from gheat are made
+// available for your convenience.
 package schemes
 
 import (
 	"image"
 	"image/color"
-	_ "image/gif"
-	_ "image/jpeg"
-	_ "image/png"
+	_ "image/gif"  // image format side effect
+	_ "image/jpeg" // image format side effect
+	_ "image/png"  // image format side effect
 	"os"
 )
 
-// Create a color scheme from an image.
+// FromImage creates a color scheme from an image.
 // The image should have all of the colors you want to use arranged vertically
 // with the "coldest" on the bottom and the "hottest" on the top.
 func FromImage(filename string) ([]color.Color, error) {
@@ -57,7 +55,8 @@ func (c mycolor) RGBA() (R, G, B, A uint32) {
 	}).RGBA()
 }
 
-// Generate a heatmap color scheme smoothly across the given scheme ranges.
+// Build generates a heatmap color scheme smoothly across the given
+// scheme ranges.
 func Build(spec SchemeSpec) []color.Color {
 	rv := []color.Color{}
 
@@ -88,7 +87,7 @@ func floatRGBA(c color.Color) (r, g, b, a float64) {
 	return float64(ir), float64(ig), float64(ib), float64(ia)
 }
 
-// A color scheme range for computing a scheme.
+// A SchemeRange is a color range for computing a scheme.
 type SchemeRange struct {
 	// The starting color for this range
 	From color.Color
@@ -98,21 +97,23 @@ type SchemeRange struct {
 	Steps int
 }
 
-// A Color Scheme generator specification.
+// A SchemeSpec is a color generator specification.
 //
 // Basically, this is just a bunch of start/stop points and colors
 // along a range.
 type SchemeSpec []SchemeRange
 
+// ColorModel satisfies the image.Image interface.
 func (ss SchemeSpec) ColorModel() color.Model {
 	return color.NRGBAModel
 }
 
-// SchemeSpecs are 32x256 images.
+// Bounds satisfies the image.Image interface.
 func (ss SchemeSpec) Bounds() image.Rectangle {
 	return image.Rect(0, 0, 32, 256)
 }
 
+// At satisfies the image.Image interface.
 func (ss SchemeSpec) At(x, y int) color.Color {
 	// This is the ridiculously slow version.
 	return Build(ss)[y]
