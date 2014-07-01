@@ -90,9 +90,9 @@ func warm(out, in draw.Image, opacity uint8, colors []color.Color) {
 	draw.Draw(out, out.Bounds(), image.Transparent, image.ZP, draw.Src)
 	bounds := in.Bounds()
 	collen := float64(len(colors))
-	wg := sync.WaitGroup{}
-	wg.Add(bounds.Dx())
+	wg := &sync.WaitGroup{}
 	for x := bounds.Min.X; x < bounds.Max.X; x++ {
+		wg.Add(1)
 		go func(x int) {
 			defer wg.Done()
 			for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
