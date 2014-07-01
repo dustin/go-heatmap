@@ -87,6 +87,7 @@ func placePoints(size image.Rectangle, limits limits,
 }
 
 func warm(out, in draw.Image, opacity uint8, colors []color.Color) {
+	draw.Draw(out, out.Bounds(), image.Transparent, image.ZP, draw.Src)
 	bounds := in.Bounds()
 	collen := float64(len(colors))
 	wg := sync.WaitGroup{}
@@ -97,23 +98,20 @@ func warm(out, in draw.Image, opacity uint8, colors []color.Color) {
 			for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
 				col := in.At(x, y)
 				_, _, _, alpha := col.RGBA()
-				percent := float64(alpha) / float64(0xffff)
-				var outcol color.Color
-				if percent == 0 {
-					outcol = color.Transparent
-				} else {
+				if alpha > 0 {
+					percent := float64(alpha) / float64(0xffff)
 					template := colors[int((collen-1)*(1.0-percent))]
 					tr, tg, tb, ta := template.RGBA()
 					ta /= 256
 					outalpha := uint8(float64(ta) *
 						(float64(opacity) / 256.0))
-					outcol = color.NRGBA{
+					outcol := color.NRGBA{
 						uint8(tr / 256),
 						uint8(tg / 256),
 						uint8(tb / 256),
 						uint8(outalpha)}
+					out.Set(x, y, outcol)
 				}
-				out.Set(x, y, outcol)
 			}
 		}(x)
 	}
