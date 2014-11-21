@@ -114,3 +114,22 @@ func BenchmarkWarming(b *testing.B) {
 		warm(out, bw, 64, colors)
 	}
 }
+
+func BenchmarkWarmingParallel(b *testing.B) {
+	l := findLimits(testPoints)
+	size := image.Rect(0, 0, 4096, 4096)
+	dot := mkDot(float64(100))
+	colors := schemes.AlphaFire
+
+	b.ResetTimer()
+
+	b.RunParallel(func(pb *testing.PB) {
+		bw := image.NewRGBA(size)
+		placePoints(size, l, bw, testPoints, dot)
+		out := image.NewRGBA(size)
+
+		for pb.Next() {
+			warm(out, bw, 64, colors)
+		}
+	})
+}
