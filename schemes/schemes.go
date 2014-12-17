@@ -43,6 +43,8 @@ type mycolor struct {
 	A float64
 }
 
+var _ = color.Color(mycolor{})
+
 func (c mycolor) RGBA() (R, G, B, A uint32) {
 	// My colors aren't pre-multiplied, so I've got to convert
 	// myself to an NRGBA, then an RGBA, then expand.
