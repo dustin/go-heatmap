@@ -120,3 +120,5 @@ func (ss SchemeSpec) At(x, y int) color.Color {
 	// This is the ridiculously slow version.
 	return Build(ss)[y]
 }
+
+var _ = image.Image(SchemeSpec{})

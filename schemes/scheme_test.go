@@ -65,3 +65,13 @@ func TestBuild(t *testing.T) {
 		t.Errorf("Got %v, wanted %v", colors, exp)
 	}
 }
+
+func TestColorRGBA(t *testing.T) {
+	c := mycolor{0x1fff, 0x1fff, 0x1fff, 0xffff}
+	r, g, b, a := c.RGBA()
+	for g, w := range map[uint32]uint32{r: 0x1f1f, g: 0x1f1f, b: 0x1f1f, a: 0xffff} {
+		if g != w {
+			t.Errorf("Expected %x, got %x")
+		}
+	}
+}
