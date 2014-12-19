@@ -75,3 +75,34 @@ func TestColorRGBA(t *testing.T) {
 		}
 	}
 }
+
+func TestSchemeSpec(t *testing.T) {
+	ss := SchemeSpec{
+		SchemeRange{
+			From:  color.NRGBA{255, 0, 0, 255},
+			To:    color.NRGBA{0, 255, 0, 255},
+			Steps: 256,
+		}}
+
+	if ss.ColorModel() != color.NRGBAModel {
+		t.Errorf("Expected NRGBAModel, got %v", ss.ColorModel())
+	}
+
+	bounds := ss.Bounds()
+	if bounds.Size().X != 32 {
+		t.Errorf("Expected width of 32, got %v", bounds.Size().X)
+	}
+	if bounds.Size().Y != 256 {
+		t.Errorf("Expected width of 256, got %v", bounds.Size().Y)
+	}
+
+	r1, g1, b1, a1 := ss.At(0, 0).RGBA()
+	if r1 != 65535 || g1 != 0 || b1 != 0 || a1 != 65535 {
+		t.Errorf("Expected rgb1 == 65535, 0, 0, 65535, got %v %v %v %v", r1, g1, b1, a1)
+	}
+
+	r2, g2, b2, a2 := ss.At(31, 255).RGBA()
+	if r2 != 0 || g2 != 65278 || b2 != 0 || a2 != 65535 {
+		t.Errorf("Expected rgb2 == 65278, 0, 0, 65535, got %v %v %v %v", r2, g2, b2, a2)
+	}
+}
