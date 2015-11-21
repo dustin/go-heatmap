@@ -71,7 +71,7 @@ func TestColorRGBA(t *testing.T) {
 	r, g, b, a := c.RGBA()
 	for g, w := range map[uint32]uint32{r: 0x1f1f, g: 0x1f1f, b: 0x1f1f, a: 0xffff} {
 		if g != w {
-			t.Errorf("Expected %x, got %x")
+			t.Errorf("Expected %x, got %x", w, g)
 		}
 	}
 }
