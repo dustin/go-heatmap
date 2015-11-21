@@ -14,27 +14,27 @@ func main() {
 	spec := schemes.SchemeSpec{
 		// From white to yellow
 		schemes.SchemeRange{
-			color.White,
-			color.NRGBA{255, 255, 0, 255},
-			50,
+			From:  color.White,
+			To:    color.NRGBA{255, 255, 0, 255},
+			Steps: 50,
 		},
 		// Then from yellow to red
 		schemes.SchemeRange{
-			color.NRGBA{255, 255, 0, 255},
-			color.NRGBA{255, 0, 0, 255},
-			60,
+			From:  color.NRGBA{255, 255, 0, 255},
+			To:    color.NRGBA{255, 0, 0, 255},
+			Steps: 60,
 		},
 		// Then go from red to a bit of grey.
 		schemes.SchemeRange{
-			color.NRGBA{255, 0, 0, 255},
-			color.NRGBA{128, 128, 128, 220},
-			100,
+			From:  color.NRGBA{255, 0, 0, 255},
+			To:    color.NRGBA{128, 128, 128, 220},
+			Steps: 100,
 		},
 		// Then down to transparent
 		schemes.SchemeRange{
-			color.NRGBA{128, 128, 128, 220},
-			color.Transparent,
-			46,
+			From:  color.NRGBA{128, 128, 128, 220},
+			To:    color.Transparent,
+			Steps: 46,
 		},
 	}
 
