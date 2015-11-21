@@ -69,7 +69,7 @@ func rootHandler(w http.ResponseWriter, req *http.Request) {
 
 	w.Header().Set("Content-type", "application/vnd.google-earth.kmz")
 	w.WriteHeader(200)
-	heatmap.HeatmapKMZ(image.Rect(0, 0, width, height),
+	heatmap.KMZ(image.Rect(0, 0, width, height),
 		data, dotsize, opacity, schemes.AlphaFire, w)
 }
 

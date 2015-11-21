@@ -52,10 +52,10 @@ func xsimilar(a, b string) bool {
 		strings.Join(strings.Fields(b), " ")
 }
 
-func TestHeatmapKML(t *testing.T) {
+func TestKML(t *testing.T) {
 	kmlBuf := &bytes.Buffer{}
 
-	img, err := HeatmapKML(image.Rect(0, 0, 1024, 1024),
+	img, err := KML(image.Rect(0, 0, 1024, 1024),
 		testPoints, 150, 128, schemes.AlphaFire,
 		testKmlImgURL, kmlBuf)
 	if err != nil {
@@ -71,10 +71,10 @@ func TestHeatmapKML(t *testing.T) {
 	}
 }
 
-func TestHeatmapKMLOutOfRange(t *testing.T) {
+func TestKMLOutOfRange(t *testing.T) {
 	kmlBuf := &bytes.Buffer{}
 
-	_, err := HeatmapKML(image.Rect(0, 0, 1024, 1024),
+	_, err := KML(image.Rect(0, 0, 1024, 1024),
 		append(testPoints, P(-200, 0)), 150, 128, schemes.AlphaFire,
 		testKmlImgURL, kmlBuf)
 	if err == nil {
@@ -82,8 +82,8 @@ func TestHeatmapKMLOutOfRange(t *testing.T) {
 	}
 }
 
-func TestHeatmapKMZBadInput(t *testing.T) {
-	err := HeatmapKMZ(image.Rect(0, 0, 1024, 1024),
+func TestKMZBadInput(t *testing.T) {
+	err := KMZ(image.Rect(0, 0, 1024, 1024),
 		append(testPoints, P(-200, 0)), 150, 128, schemes.AlphaFire,
 		ioutil.Discard)
 	if err == nil {
@@ -106,8 +106,8 @@ func (w *writeFailer) Write(p []byte) (int, error) {
 	return towrite, err
 }
 
-func TestHeatmapKMZBadWriter(t *testing.T) {
-	err := HeatmapKMZ(image.Rect(0, 0, 1024, 1024),
+func TestKMZBadWriter(t *testing.T) {
+	err := KMZ(image.Rect(0, 0, 1024, 1024),
 		testPoints, 150, 128, schemes.AlphaFire,
 		&writeFailer{514})
 	if err == nil {
@@ -128,9 +128,9 @@ func rzd(t *testing.T, zf *zip.File) []byte {
 	return data
 }
 
-func TestHeatmapKMZ(t *testing.T) {
+func TestKMZ(t *testing.T) {
 	buf := &bytes.Buffer{}
-	err := HeatmapKMZ(image.Rect(0, 0, 1024, 1024),
+	err := KMZ(image.Rect(0, 0, 1024, 1024),
 		testPoints, 150, 128, schemes.AlphaFire,
 		buf)
 	if err != nil {

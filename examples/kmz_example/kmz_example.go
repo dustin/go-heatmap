@@ -26,7 +26,7 @@ func main() {
 		log.Fatalf("Error creating kml file:  %v", err)
 	}
 	defer kmzout.Close()
-	err = heatmap.HeatmapKMZ(image.Rect(0, 0, 1024, 1024),
+	err = heatmap.KMZ(image.Rect(0, 0, 1024, 1024),
 		points, 200, 128, schemes.AlphaFire, kmzout)
 	if err != nil {
 		log.Fatalf("Error creating heatmap: %v", err)

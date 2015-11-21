@@ -75,7 +75,7 @@ func main() {
 	}
 	defer out.Close()
 
-	err = heatmap.HeatmapKMZ(image.Rect(0, 0, 8192, 4096), locations, 50, 96,
+	err = heatmap.KMZ(image.Rect(0, 0, 8192, 4096), locations, 50, 96,
 		schemes.AlphaFire, out)
 	if err != nil {
 		log.Fatalf("Error generating thingy: %v", err)

@@ -30,8 +30,8 @@ const kmlEnd = `</Folder></kml>`
 
 const kml = kmlStart + kmlOverlay + kmlEnd
 
-// HeatmapKML generates a heatmap for geographical data and the kml required to render it.
-func HeatmapKML(size image.Rectangle, points []DataPoint, dotSize int, opacity uint8,
+// KML generates a heatmap for geographical data and the kml required to render it.
+func KML(size image.Rectangle, points []DataPoint, dotSize int, opacity uint8,
 	scheme []color.Color, imgurl string, out io.Writer) (image.Image, error) {
 
 	limits := findLimits(points)
@@ -58,8 +58,8 @@ func must(err error) {
 	}
 }
 
-// HeatmapKMZ generates a heatmap for geographical data as a kmz.
-func HeatmapKMZ(size image.Rectangle, points []DataPoint, dotSize int, opacity uint8,
+// KMZ generates a heatmap for geographical data as a kmz.
+func KMZ(size image.Rectangle, points []DataPoint, dotSize int, opacity uint8,
 	scheme []color.Color, out io.Writer) error {
 
 	z := zip.NewWriter(out)
@@ -67,7 +67,7 @@ func HeatmapKMZ(size image.Rectangle, points []DataPoint, dotSize int, opacity u
 	dockml, err := z.Create("doc.kml")
 	must(err) // no known condition can cause failure here
 
-	img, err := HeatmapKML(size, points, dotSize, opacity, scheme,
+	img, err := KML(size, points, dotSize, opacity, scheme,
 		"heatmap.png", dockml)
 	if err != nil {
 		return err

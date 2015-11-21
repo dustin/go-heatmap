@@ -34,7 +34,7 @@ func main() {
 	}
 	defer imgout.Close()
 
-	img, err := heatmap.HeatmapKML(image.Rect(0, 0, 1024, 1024),
+	img, err := heatmap.KML(image.Rect(0, 0, 1024, 1024),
 		points, 200, 128, schemes.AlphaFire, "test.png", kmlout)
 	png.Encode(imgout, img)
 }
