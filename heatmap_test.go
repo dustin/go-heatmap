@@ -7,7 +7,7 @@ import (
 	"math/rand"
 	"testing"
 
-	"./schemes"
+	"github.com/dustin/go-heatmap/schemes"
 
 	"github.com/jteeuwen/imghash"
 )
